@@ -4,9 +4,13 @@
 
 **គំរូលទ្ធផលរំពឹងទុក (Expected UI Result):**
 
+```
+```
+
 ![Profile Card Practice UI Mockup](images/flutter_profile_card_preview.png)
 
 **តម្រូវការ:**
+
 1. ប្រើប្រាស់ `Scaffold` និង `AppBar` ដាក់ចំណងជើងថា `"My Profile Card"`។
 2. ប្រើប្រាស់ `Card` នៅចំកណ្តាលអេក្រង់ ដោយមាន `Padding` 20px។
 3. នៅក្នុង Card ត្រូវមាន៖
@@ -25,6 +29,7 @@
 ![Interactive Widgets Practice UI Mockup](images/flutter_interactive_widgets_preview.png)
 
 **តម្រូវការ:**
+
 1. បង្កើតសកម្មភាពចុចនៅលើ Buttons ផ្សេងៗគ្នា៖
    - **ElevatedButton**: ចុចហើយបង្ហាញ `SnackBar` ឬ Print សារកម្រិតខ្ពស់។
    - **TextButton**: ចុចដើម្បី Reset ឬ បោះបង់។
