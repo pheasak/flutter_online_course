@@ -12,12 +12,12 @@ Layout Widgets គឺជា Widget សម្រាប់គ្រប់គ្រ
 
 ### 📊 តារាងសង្ខេប Layout Widgets (Visual Overview):
 
-| Layout Widget          |   ទិសដៅ (Direction)   | ទម្រង់រៀបចំ (Visual Structure)                              | ការប្រើប្រាស់ចម្បង (Main Use Case)                             |
-| :--------------------- | :-------------------------: | :--------------------------------------------------------------------- | :------------------------------------------------------------------------------- |
+| Layout Widget          |   ទិសដៅ (Direction)   | ទម្រង់រៀបចំ (Visual Structure)                            | ការប្រើប្រាស់ចម្បង (Main Use Case)                             |
+| :--------------------- | :-------------------------: | :------------------------------------------------------------------- | :------------------------------------------------------------------------------- |
 | **`Column`**   |       ⬇️ បញ្ឈរ       | `[ Element A ][ Element B ]``[ Element C ]`                        | រៀបចំធាតុពីលើចុះក្រោម (Forms, Profile Info)                 |
-| **`Row`**      |       ➡️ ផ្ដេក       | `[ A ] [ B ] [ C ]`                                                  | រៀបចំធាតុពីឆ្វេងទៅស្ដាំ (Toolbars, Action Icons)          |
+| **`Row`**      |       ➡️ ផ្ដេក       | `[ A ] [ B ] [ C ]`                                                | រៀបចំធាតុពីឆ្វេងទៅស្ដាំ (Toolbars, Action Icons)          |
 | **`ListView`** |   📜 រមូរចុះឡើង   | `[ Item 1 ][ Item 2 ]``[ Item 3 ]...`                              | បញ្ជីទិន្នន័យច្រើន ឬទាញពី API ដែលអាច Scroll បាន |
-| **`GridView`** | 🔲 ក្រឡាចត្រង្គ | `[ A ] [ B ][ C ] [ D ]`                                             | បង្ហាញទំនិញ e-Commerce, Photo Gallery (២+ ជួរ)                    |
+| **`GridView`** | 🔲 ក្រឡាចត្រង្គ | `[ A ] [ B ][ C ] [ D ]`                                           | បង្ហាញទំនិញ e-Commerce, Photo Gallery (២+ ជួរ)                    |
 | **`Stack`**    |  🥞 ត្រួតលើគ្នា  | `Layer 3 (Badge)└── Layer 2 (Text)``    └── Layer 1 (Image)` | ដាក់ Widget ជាន់ពីលើគ្នា (Floating Badges, Overlays)             |
 
 ```mermaid
@@ -295,7 +295,7 @@ flowchart TD
         ScreenC["📱 <b>Screen C</b> (កំពុងបង្ហាញលើគេ / Active Screen)"]
         ScreenB["📱 <b>Screen B</b> (អេក្រង់បន្ទាប់)"]
         ScreenA["🏠 <b>Screen A</b> (Root Screen / អេក្រង់ដើម)"]
-      
+    
         ScreenA ==>|"Navigator.push()"| ScreenB
         ScreenB ==>|"Navigator.push()"| ScreenC
         ScreenC -.->|"Navigator.pop()"| ScreenB
