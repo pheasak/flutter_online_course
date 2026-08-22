@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:learning/week1/common_widget.dart';
+import 'package:learning/week1/interactivity_widget.dart';
+import 'package:learning/week2/layout_widget.dart';
+import 'package:learning/week2/practice.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const CommonWidget(),
+      home: const Practice(),
     );
   }
 }
