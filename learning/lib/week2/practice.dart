@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:learning/data/product_data.dart';
+import 'package:learning/week2/detail_screen.dart';
 
 class Practice extends StatelessWidget {
   const Practice({super.key});
@@ -89,11 +91,11 @@ class Practice extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
-                childAspectRatio: 0.8,
+                childAspectRatio: 0.65,
               ),
-              itemCount: 10,
+              itemCount: productList.length,
               itemBuilder: (context, index) {
-                return productCard();
+                return productCard(context, model: productList[index]);
               },
             ),
           ),
@@ -143,79 +145,93 @@ class Practice extends StatelessWidget {
     );
   }
 
-  Widget productCard() {
-    return Container(
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            offset: Offset(0, 2),
-            color: Colors.grey.withOpacity(0.5),
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: 150,
-                color: Colors.grey,
-                child: Image.network(
-                  fit: BoxFit.cover,
-                  'https://imgs.search.brave.com/OvpPy8rye6UzKF0S3ENiyHkNQ1CFkXPgxdy-sSjfMBg/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93d3cu/YXBwbGUuY29tL3Yv/aXBob25lL2hvbWUv/Y2ovaW1hZ2VzL292/ZXJ2aWV3L2NvbnNp/ZGVyX21vZGFscy9p/bm5vdmF0aW9uL21v/ZGFsX3NlY29uZF9f/ZDlsaGJlOW91dTgy/X2xhcmdlLmpwZw',
+  Widget productCard(BuildContext context, {required Product model}) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/productDetailScreen', arguments: model);
+      },
+      child: Container(
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              offset: Offset(0, 2),
+              color: Colors.grey.withOpacity(0.5),
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  height: 150,
+                  color: Colors.grey,
+                  child: Image.network(fit: BoxFit.cover, model.imageUrl),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8.0,
-                  vertical: 10,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.favorite_border),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 6),
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(25),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8.0,
+                    vertical: 10,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(Icons.favorite_border),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 6),
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                        child: Text(
+                          model.discount,
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
-                      child: Text(
-                        '-20%',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              '\$100',
-              style: TextStyle(
-                color: Colors.green,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                model.title,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              'Description (Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.)',
-              maxLines: 2,
-              style: TextStyle(fontSize: 13),
-              overflow: TextOverflow.ellipsis,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                '\$${model.price}',
+                style: TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
+                model.description,
+                maxLines: 2,
+                style: TextStyle(fontSize: 13),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

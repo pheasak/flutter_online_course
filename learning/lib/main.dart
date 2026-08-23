@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning/week1/common_widget.dart';
 import 'package:learning/week1/interactivity_widget.dart';
+import 'package:learning/week2/detail_screen.dart';
 import 'package:learning/week2/layout_widget.dart';
 import 'package:learning/week2/practice.dart';
 
@@ -15,9 +16,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const Practice(),
+        '/productDetailScreen': (context) => const ProductDetailScreen(),
+      },
       title: 'Flutter Demo',
       theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
-      home: const Practice(),
+      // home: const Practice(),
     );
   }
 }
