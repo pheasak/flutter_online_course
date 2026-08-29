@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:learning/data/product_data.dart';
+import 'package:learning/week3/button_counter_widget.dart';
+import 'package:learning/week3/favorite_button_widget.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   const ProductDetailScreen({super.key});
@@ -12,7 +14,7 @@ class ProductDetailScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text(args.title),
-        actions: [Icon(Icons.favorite_border), SizedBox(width: 8)],
+        actions: [FavoriteButton(), SizedBox(width: 8)],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,6 +53,7 @@ class ProductDetailScreen extends StatelessWidget {
               ),
             ),
           ),
+          CounterWidget(),
         ],
       ),
       bottomNavigationBar: Padding(
