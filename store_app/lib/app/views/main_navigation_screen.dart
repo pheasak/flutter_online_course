@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../theme/app_theme.dart';
+import '../../core/theme/app_theme.dart';
 import '../view_models/cart_view_model.dart';
 import '../view_models/navigation_view_model.dart';
 import 'cart_screen.dart';
