@@ -4,34 +4,6 @@
 
 ---
 
-## 📑 មាតិកា (Table of Contents)
-
-1. [សេចក្តីផ្តើមអំពី REST API (What is REST API?)](#1-សេចក្តីផ្តើមអំពី-rest-api-what-is-rest-api)
-   - [Client-Server Architecture](#11-client-server-architecture)
-   - [HTTP Methods សំខាន់ៗ (GET, POST, PUT, DELETE)](#12-http-methods-សំខាន់ៗ)
-   - [HTTP Status Codes ដែលត្រូវដឹង](#13-http-status-codes-ដែលត្រូវចាំបាច់)
-   - [Headers, URL Parameters, និង Request Body](#14-headers-url-parameters-និង-request-body)
-2. [ការរៀបចំ Package នៅក្នុង Flutter (Setup)](#2-ការរៀបចំ-package-នៅក្នុង-flutter)
-   - [កញ្ចប់ `http` package](#21-ការដំឡើង-http-package)
-   - [ការកំណត់ Network Permissions (Android & macOS/iOS)](#22-ការកំណត់-network-permissions)
-3. [ដំណើរការ ៤ ជំហាននៃការភ្ជាប់ REST API (The 4 Core Steps)](#3-ដំណើរការ-៤-ជំហាននៃការភ្ជាប់-rest-api)
-   - [ជំហានទី ១: បង្កើត Model (JSON Deserialization)](#ជំហានទី-១-បង្កើត-model-json-deserialization)
-   - [ជំហានទី ២: បង្កើត API Client / Data Source](#ជំហានទី-២-បង្កើត-api-client--data-source)
-   - [ជំហានទី ៣: ភ្ជាប់ជាមួយ Repository & ViewModel](#ជំហានទី-៣-ភ្ជាប់ជាមួយ-repository--viewmodel)
-   - [ជំហានទី ៤: បង្ហាញទិន្នន័យលើ UI (Handling Loading/Error/Success)](#ជំហានទី-៤-បង្ហាញទិន្នន័យលើ-ui)
-4. [ឧទាហរណ៍ជាក់ស្តែងជាមួយ FakeStore API (Practical Examples)](#4-ឧទាហរណ៍ជាក់ស្តែងជាមួយ-fakestore-api)
-   - [ឧទាហរណ៍ទី ១: ទាញយកផលិតផលតែមួយ (Fetch Single Item)](#៤១-ទាញយកផលិតផលតែមួយ-fetch-1-product)
-   - [ឧទាហរណ៍ទី ២: ទាញយកបញ្ជីផលិតផលទាំងអស់ (Fetch List of Items)](#៤២-ទាញយកបញ្ជីផលិតផលទាំងអស់-fetch-product-list)
-   - [ឧទាហរណ៍ទី ៣: បញ្ជូនទិន្នន័យថ្មី (POST Request)](#៤៣-បញ្ជូនទិន្នន័យថ្មី-post-request)
-5. [ការគ្រប់គ្រង Error & ករណីគ្មាន Internet (Error Handling)](#5-ការគ្រប់គ្រង-error--ករណីគ្មាន-internet)
-   - [Custom Exception Class](#៥១-បង្កើត-custom-apiexception)
-   - [Timeout & Connectivity Fallback](#៥២-handling-timeouts--offline-fallback)
-6. [ការរៀបចំតាមស្តង់ដារ MVVM (Clean Data Flow)](#6-ការរៀបចំតាមស្តង់ដារ-mvvm-clean-data-flow)
-7. [កំហុសឆ្គងទូទៅ (Common Anti-Patterns)](#7-កំហុសឆ្គងទូទៅ-anti-patterns)
-8. [🔍 សំណួរពិភាក្សា និងលំហាត់អនុវត្ត (Quiz & Practice)](#8--សំណួរពិភាក្សា-និងលំហាត់អនុវត្ត-quiz--practice)
-
----
-
 ## 1. សេចក្តីផ្តើមអំពី REST API (What is REST API?)
 
 **REST** តំណាងឱ្យ **REpresentational State Transfer**។ វាគឺជាទម្រង់ស្ថាបត្យកម្មស្តង់ដារ (Architectural Style) សម្រាប់ការបញ្ជូន និងផ្លាស់ប្តូរទិន្នន័យរវាង **Client (Flutter Mobile App)** និង **Server (Backend Database)** តាមរយៈពិធីការ **HTTP/HTTPS**។
@@ -64,13 +36,13 @@ sequenceDiagram
 
 ### 1.2 HTTP Methods សំខាន់ៗ
 
-| HTTP Method | សកម្មភាព CRUD | គោលបំណង | ឧទាហរណ៍ URL |
-| :--- | :--- | :--- | :--- |
-| **`GET`** | **Read** | ទាញយកទិន្នន័យពី Server (មិនកែប្រែទិន្នន័យក្នុង DB) | `GET /products`, `GET /products/1` |
-| **`POST`** | **Create** | បង្កើតទិន្នន័យថ្មី ឬ Upload ឯកសារ | `POST /products` (Body: JSON) |
-| **`PUT`** | **Update / Replace** | កែប្រែទិន្នន័យទាំងមូលឡើងវិញ | `PUT /products/1` (Body: JSON ពេញលេញ) |
-| **`PATCH`** | **Partial Update** | កែប្រែតែផ្នែកខ្លះនៃទិន្នន័យ | `PATCH /products/1` (Body: `{"price": 99.9}`) |
-| **`DELETE`** | **Delete** | លុបទិន្នន័យចេញពី Server | `DELETE /products/1` |
+| HTTP Method          | សកម្មភាព CRUD      | គោលបំណង                                                                          | ឧទាហរណ៍ URL                                |
+| :------------------- | :------------------------- | :-------------------------------------------------------------------------------------- | :------------------------------------------------ |
+| **`GET`**    | **Read**             | ទាញយកទិន្នន័យពី Server (មិនកែប្រែទិន្នន័យក្នុង DB) | `GET /products`, `GET /products/1`            |
+| **`POST`**   | **Create**           | បង្កើតទិន្នន័យថ្មី ឬ Upload ឯកសារ                               | `POST /products` (Body: JSON)                   |
+| **`PUT`**    | **Update / Replace** | កែប្រែទិន្នន័យទាំងមូលឡើងវិញ                                  | `PUT /products/1` (Body: JSON ពេញលេញ)     |
+| **`PATCH`**  | **Partial Update**   | កែប្រែតែផ្នែកខ្លះនៃទិន្នន័យ                                  | `PATCH /products/1` (Body: `{"price": 99.9}`) |
+| **`DELETE`** | **Delete**           | លុបទិន្នន័យចេញពី Server                                                 | `DELETE /products/1`                            |
 
 ---
 
@@ -78,15 +50,15 @@ sequenceDiagram
 
 ពេល Server ឆ្លើយតបមកវិញ វាតែងតែភ្ជាប់មកជាមួយ **Status Code** (លេខ ៣ ខ្ទង់) ដើម្បីបញ្ជាក់ថាសំណើជោគជ័យ ឬមានបញ្ហា៖
 
-| លេខកូដ | អត្ថន័យ | ការពន្យល់ |
-| :--- | :--- | :--- |
-| **`200 OK`** | ជោគជ័យ (Success) | Request បានជោគជ័យ ហើយទិន្នន័យត្រូវបានបញ្ជូនមកវិញ។ |
-| **`201 Created`** | បង្កើតជោគជ័យ | ទិន្នន័យថ្មីត្រូវបាន Save ចូលក្នុង Database រួចរាល់ (ជាទូទៅកើតលើ `POST`)។ |
-| **`400 Bad Request`** | សំណើមិនត្រឹមត្រូវ | Client ផ្ញើ Body ឬ Parameter ខុសទម្រង់ដែល Server ទាមទារ។ |
-| **`401 Unauthorized`** | គ្មានសិទ្ធិ | មិនទាន់ Login ឬ Auth Token ផុតកំណត់ (Expired Token)។ |
-| **`403 Forbidden`** | ត្រូវបានហាមឃាត់ | User បាន Login ហើយ តែគ្មានសិទ្ធិចូលមើលទិន្នន័យនោះ (ឧ. User ធម្មតាចង់ចូល Admin)។ |
-| **`404 Not Found`** | រកមិនឃើញ | URL endpoint ឬ ID នៃទិន្នន័យមិនមានក្នុង Server។ |
-| **`500 Internal Server Error`** | កំហុសខាង Server | Backend Code មាន Bug ឬ Database គាំង។ |
+| លេខកូដ                            | អត្ថន័យ                     | ការពន្យល់                                                                                                                |
+| :-------------------------------------- | :--------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- |
+| **`200 OK`**                    | ជោគជ័យ (Success)             | Request បានជោគជ័យ ហើយទិន្នន័យត្រូវបានបញ្ជូនមកវិញ។                                         |
+| **`201 Created`**               | បង្កើតជោគជ័យ           | ទិន្នន័យថ្មីត្រូវបាន Save ចូលក្នុង Database រួចរាល់ (ជាទូទៅកើតលើ`POST`)។         |
+| **`400 Bad Request`**           | សំណើមិនត្រឹមត្រូវ | Client ផ្ញើ Body ឬ Parameter ខុសទម្រង់ដែល Server ទាមទារ។                                                  |
+| **`401 Unauthorized`**          | គ្មានសិទ្ធិ             | មិនទាន់ Login ឬ Auth Token ផុតកំណត់ (Expired Token)។                                                             |
+| **`403 Forbidden`**             | ត្រូវបានហាមឃាត់     | User បាន Login ហើយ តែគ្មានសិទ្ធិចូលមើលទិន្នន័យនោះ (ឧ. User ធម្មតាចង់ចូល Admin)។ |
+| **`404 Not Found`**             | រកមិនឃើញ                   | URL endpoint ឬ ID នៃទិន្នន័យមិនមានក្នុង Server។                                                            |
+| **`500 Internal Server Error`** | កំហុសខាង Server            | Backend Code មាន Bug ឬ Database គាំង។                                                                                    |
 
 ---
 
@@ -120,6 +92,7 @@ dependencies:
 ```
 
 ដំណើរការ command នៅក្នុង Terminal:
+
 ```bash
 flutter pub get
 ```
@@ -132,7 +105,9 @@ flutter pub get
 > ប្រសិនបើមិនកំណត់ Permission ទេ App នឹងមិនអាចចេញទៅ Internet បានឡើយនៅលើ Platform មួយចំនួន!
 
 #### 🤖 Android (`android/app/src/main/AndroidManifest.xml`)
+
 បន្ថែមបន្ទាត់នេះនៅខាងក្រៅ `<application>` tag:
+
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- អនុញ្ញាតឱ្យ App ប្រើប្រាស់ Internet -->
@@ -142,7 +117,9 @@ flutter pub get
 ```
 
 #### 🍏 macOS (`macos/Runner/DebugProfile.entitlements` & `Release.entitlements`)
+
 ប្រសិនបើ Run លើ macOS Desktop ត្រូវបើក network client entitlement:
+
 ```xml
 <key>com.apple.security.network.client</key>
 <true/>
@@ -175,6 +152,7 @@ flutter pub get
 ### ជំហានទី ១: បង្កើត Model (JSON Deserialization)
 
 JSON ពី FakeStore API មានទម្រង់បែបនេះ៖
+
 ```json
 {
   "id": 1,
@@ -516,6 +494,7 @@ store_app/
 ```
 
 > **អត្ថប្រយោជន៍:**
+>
 > - UI មិនដែលខ្វល់ថាតើទិន្នន័យបានមកពីណាឡើយ។
 > - បើ Server ដាច់ ឬចង់សាកល្បង Mock data យើងគ្រាន់តែកែក្នុង `ProductRepositoryImpl` ដោយមិនប៉ះពាល់ដល់ Widgets មួយបន្ទាត់ណាឡើយ!
 

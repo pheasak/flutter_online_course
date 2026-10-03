@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:learning/GetX/counter_screen.dart';
 import 'package:learning/controller/production_controller.dart';
+import 'package:learning/fetchAPI/one_piece_character_screen.dart';
 import 'package:learning/week2/detail_screen.dart';
 import 'package:learning/week2/practice.dart';
 import 'package:learning/week3/my_cart_screen.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(
           name: '/home',
-          page: () => const Practice(),
+          page: () => const OnePieceCharacterScreen(),
           binding: ProductBindings(),
         ),
         GetPage(
