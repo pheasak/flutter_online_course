@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:learning/controller/production_controller.dart';
 import 'package:learning/data/product_data.dart';
 import 'package:learning/week3/button_counter_widget.dart';
 import 'package:learning/week3/favorite_button_widget.dart';
@@ -9,7 +11,7 @@ class ProductDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Product args = ModalRoute.of(context)!.settings.arguments as Product;
-
+    final controller = Get.find<ProductionController>();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -65,9 +67,11 @@ class ProductDetailScreen extends StatelessWidget {
             ),
             backgroundColor: MaterialStatePropertyAll(Colors.indigo),
           ),
-          onPressed: () {},
+          onPressed: () {
+            controller.addToCart(args);
+          },
           child: Text(
-            'Buy',
+            'Add to cart',
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,

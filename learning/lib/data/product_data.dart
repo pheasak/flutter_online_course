@@ -10,6 +10,7 @@ class Product {
   final String imageUrl;
   final String category;
   final bool isFavorite;
+  final int qty;
 
   const Product({
     required this.id,
@@ -23,6 +24,7 @@ class Product {
     required this.imageUrl,
     required this.category,
     this.isFavorite = false,
+    this.qty = 0,
   });
 }
 

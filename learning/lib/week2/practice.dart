@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:learning/controller/production_controller.dart';
 import 'package:learning/data/product_data.dart';
 import 'package:learning/week2/detail_screen.dart';
+import 'package:learning/week3/my_cart_screen.dart';
 
 class Practice extends StatelessWidget {
   const Practice({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.find<ProductionController>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Welcome Back!'),
@@ -85,18 +89,20 @@ class Practice extends StatelessWidget {
 
           // Product List
           Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.all(16),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 12,
-                crossAxisSpacing: 12,
-                childAspectRatio: 0.65,
+            child: Obx(
+              () => GridView.builder(
+                padding: EdgeInsets.all(16),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 12,
+                  crossAxisSpacing: 12,
+                  childAspectRatio: 0.65,
+                ),
+                itemCount: controller.products.length,
+                itemBuilder: (context, index) {
+                  return productCard(context, model: productList[index]);
+                },
               ),
-              itemCount: productList.length,
-              itemBuilder: (context, index) {
-                return productCard(context, model: productList[index]);
-              },
             ),
           ),
         ],
@@ -122,6 +128,11 @@ class Practice extends StatelessWidget {
           selectedFontSize: 12,
           unselectedFontSize: 12,
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
+          onTap: (int index) {
+            if (index == 2) {
+              Get.toNamed('/cart');
+            }
+          },
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),
@@ -148,7 +159,8 @@ class Practice extends StatelessWidget {
   Widget productCard(BuildContext context, {required Product model}) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/productDetailScreen', arguments: model);
+        // Navigator.pushNamed(context, '/productDetailScreen', arguments: model);
+        Get.toNamed('/productDetailScreen', arguments: model);
       },
       child: Container(
         clipBehavior: Clip.antiAlias,

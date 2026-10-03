@@ -1,24 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:learning/controller/production_controller.dart';
+import 'package:learning/data/product_data.dart';
 import 'package:learning/week3/counter_button_widget.dart';
-
-/// Model representing an item in the cart
-class CartItem {
-  final String id;
-  final String title;
-  final String subtitle;
-  final double price;
-  final String imageUrl;
-  int quantity;
-
-  CartItem({
-    required this.id,
-    required this.title,
-    required this.subtitle,
-    required this.price,
-    required this.imageUrl,
-    this.quantity = 1,
-  });
-}
 
 class MyCartScreen extends StatefulWidget {
   const MyCartScreen({super.key});
@@ -28,56 +12,25 @@ class MyCartScreen extends StatefulWidget {
 }
 
 class _MyCartScreenState extends State<MyCartScreen> {
-  // Initial list of items in the cart based on preview design
-  final List<CartItem> _cartItems = [
-    CartItem(
-      id: '1',
-      title: 'Apple MacBook Air M2',
-      subtitle: 'Starlight, 13", 8GB, 256GB SSD',
-      price: 1199.00,
-      imageUrl:
-          'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&auto=format&fit=crop&q=80',
-      quantity: 1,
-    ),
-    CartItem(
-      id: '2',
-      title: 'iPhone 15 Pro Titanium',
-      subtitle: 'Black, 128GB',
-      price: 999.00,
-      imageUrl:
-          'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500&auto=format&fit=crop&q=80',
-      quantity: 1,
-    ),
-    CartItem(
-      id: '3',
-      title: 'Sony WH-1000XM5\nHeadphones',
-      subtitle: 'Black, Noise Cancelling',
-      price: 499.00,
-      imageUrl:
-          'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=80',
-      quantity: 1,
-    ),
-  ];
-
   // Fixed discount amount
-  final double _discountAmount = 50.00;
-  final double _taxRate = 0.10; // 10%
+  // final double _discountAmount = 50.00;
+  // final double _taxRate = 0.10; // 10%
 
-  // Calculated values
-  int get _totalItemCount =>
-      _cartItems.fold(0, (sum, item) => sum + item.quantity);
+  // // Calculated values
+  // int get _totalItemCount =>
+  //     _cartItems.fold(0, (sum, item) => sum + item.quantity);
 
-  double get _subtotal =>
-      _cartItems.fold(0.0, (sum, item) => sum + (item.price * item.quantity));
+  // double get _subtotal =>
+  //     _cartItems.fold(0.0, (sum, item) => sum + (item.price * item.quantity));
 
-  double get _discount => _cartItems.isEmpty ? 0.0 : _discountAmount;
+  // double get _discount => _cartItems.isEmpty ? 0.0 : _discountAmount;
 
-  double get _taxableAmount =>
-      (_subtotal > _discount) ? (_subtotal - _discount) : 0.0;
+  // double get _taxableAmount =>
+  //     (_subtotal > _discount) ? (_subtotal - _discount) : 0.0;
 
-  double get _tax => _taxableAmount * _taxRate;
+  // double get _tax => _taxableAmount * _taxRate;
 
-  double get _total => _taxableAmount + _tax;
+  // double get _total => _taxableAmount + _tax;
 
   // Format currency with comma separator: e.g. 2,911.70
   String _formatCurrency(double amount) {
@@ -97,6 +50,8 @@ class _MyCartScreenState extends State<MyCartScreen> {
   //   setState(() {});
   // }
 
+  final controller = Get.find<ProductionController>();
+
   @override
   Widget build(BuildContext context) {
     final primaryColor = const Color(0xFF3843A1);
@@ -109,7 +64,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
         surfaceTintColor: Colors.transparent,
         centerTitle: true,
         title: Text(
-          'My Cart ($_totalItemCount ${_totalItemCount == 1 ? "Item" : "Items"})',
+          'My Cart (${controller.cartItems.length} Items)',
           style: const TextStyle(
             color: Colors.black87,
             fontWeight: FontWeight.bold,
@@ -129,7 +84,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
           child: Container(color: Colors.grey.shade200, height: 1),
         ),
       ),
-      body: _cartItems.isEmpty
+      body: controller.cartItems.isEmpty
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -161,18 +116,19 @@ class _MyCartScreenState extends State<MyCartScreen> {
               child: Column(
                 children: [
                   // List of cart item cards
-                  ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: _cartItems.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 12),
-                    itemBuilder: (context, index) {
-                      final item = _cartItems[index];
-                      return _buildCartItemCard(item, index, primaryColor);
-                    },
+                  Obx(
+                    () => ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: controller.cartItems.length,
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        final item = controller.cartItems[index];
+                        return _buildCartItemCard(item, index, primaryColor);
+                      },
+                    ),
                   ),
-
                   const SizedBox(height: 16),
 
                   // Order Summary Card
@@ -191,7 +147,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
   }
 
   /// Cart Item Card
-  Widget _buildCartItemCard(CartItem item, int index, Color primaryColor) {
+  Widget _buildCartItemCard(Product item, int index, Color primaryColor) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -266,7 +222,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
 
                 // Subtitle
                 Text(
-                  item.subtitle,
+                  item.title,
                   style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
                 ),
                 const SizedBox(height: 10),
@@ -288,16 +244,16 @@ class _MyCartScreenState extends State<MyCartScreen> {
 
                     // Counter Pill Widget
                     CounterButtonWidget(
-                      value: item.quantity,
+                      value: item.qty,
                       decrement: (value) {
-                        setState(() {
-                          _cartItems[index].quantity = value;
-                        });
+                        // setState(() {
+                        //   controller.cartItems.value[index].qt = value;
+                        // });
                       },
                       increment: (value) {
-                        setState(() {
-                          _cartItems[index].quantity = value;
-                        });
+                        // setState(() {
+                        //   controller.cartItems..  = value;
+                        // });
                       },
                     ),
                   ],
@@ -340,22 +296,19 @@ class _MyCartScreenState extends State<MyCartScreen> {
           const SizedBox(height: 14),
 
           // Subtotal
-          _buildSummaryRow(
-            label: 'Subtotal',
-            value: _formatCurrency(_subtotal),
-          ),
+          _buildSummaryRow(label: 'Subtotal', value: _formatCurrency(0)),
           const SizedBox(height: 10),
 
           // Discount
           _buildSummaryRow(
             label: 'Discount',
-            value: '(-${_formatCurrency(_discount)})',
+            value: '(-${_formatCurrency(0)})',
             valueColor: const Color(0xFF2E7D32),
           ),
           const SizedBox(height: 10),
 
           // Tax
-          _buildSummaryRow(label: 'Tax (10%)', value: _formatCurrency(_tax)),
+          _buildSummaryRow(label: 'Tax (10%)', value: _formatCurrency(0)),
           const SizedBox(height: 14),
 
           // Total
@@ -371,7 +324,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
                 ),
               ),
               Text(
-                _formatCurrency(_total),
+                _formatCurrency(0),
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -415,13 +368,13 @@ class _MyCartScreenState extends State<MyCartScreen> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: _cartItems.isEmpty
+        onPressed: controller.cartItems.isEmpty
             ? null
             : () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      'Order placed successfully! Total: ${_formatCurrency(_total)}',
+                      'Order placed successfully! Total: ${_formatCurrency(0)}',
                     ),
                     backgroundColor: primaryColor,
                   ),
@@ -459,7 +412,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
 
             // Secondary line: Proceed to Checkout ($X,XXX.XX)
             Text(
-              'Proceed to Checkout (${_formatCurrency(_total)})',
+              'Proceed to Checkout (${_formatCurrency(0)})',
               style: TextStyle(
                 fontSize: 13,
                 color: Colors.white.withValues(alpha: 0.85),
